@@ -1,8 +1,8 @@
 //Test actions
-const testFollow = (res, req) => {
+const testFollow = (req, res) => {
 
     return res.status(200).send({
-        message: "Message sent from controllers/users.js"
+        message: "Message sent from controllers/follow.js"
     })
 
 }

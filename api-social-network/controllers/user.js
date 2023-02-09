@@ -1,5 +1,5 @@
 //Test actions
-const testUser = (res, req) => {
+const testUser = (req, res) => {
 
     return res.status(200).send({
         message: "Message sent from controllers/users.js"

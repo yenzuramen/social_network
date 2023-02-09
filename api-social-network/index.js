@@ -18,6 +18,13 @@ app.use(express.urlencoded({ extended: true })) //Decodes data with form-urlenco
 
 
 //Load routes conf (pending)
+const userRoutes = require("./routes/user")
+const postRoutes = require("./routes/post")
+const followRoutes = require("./routes/follow")
+
+app.use("/api",userRoutes)
+app.use("/api",postRoutes)
+app.use("/api",followRoutes)
 
 //Test route
 app.get("/test-route", (req, res) => {
