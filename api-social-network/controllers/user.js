@@ -1,5 +1,6 @@
 //Impor model
 const User = require("../models/user")
+const bcrypt = require("bcrypt")
 
 //Test actions
 const testUser = (req, res) => {
@@ -25,16 +26,14 @@ const saveUser = (req, res) => {
     }
     console.log('Passed validation');
 
-    //Create user object to save
-    let userToSave = new User(params)
 
     //validate that it doesnt exist already
     User.find({
         $or: [
-            { email: userToSave.email.toLowerCase() },
-            { nickname: userToSave.nickname.toLowerCase() }
+            { email: params.email.toLowerCase() },
+            { nickname: params.nickname.toLowerCase() }
         ]
-    }).exec((error, users) => {
+    }).exec(async (error, users) => {
         if (error) {
             return res.status(400).json({
                 status: 'error',
@@ -48,17 +47,36 @@ const saveUser = (req, res) => {
                 message: 'username or email already exist'
             })
         }
-        //cipher password
+
+        // bcrypt.hash(userToSave.password, 10, (error, pwdHashed) => {
+        //     console.log(pwdHashed);
+        //     userToSave.password = pwdHashed;
+        //     console.log(userToSave);
+        // })
+
+
+        //cipher password (data to ciph, iteration num)
+        let hashedPwd = await bcrypt.hash(params.password, 10)
+        params.password = hashedPwd
+
+        //Create user object to save
+        let userToSave = new User(params)
 
         //save user on database
+        userToSave.save((error, savedUser) => {
+            if (error || !savedUser)  return res.status(500).json({   status: 'error',   message: 'couldnt save user' })
+     
 
-        //return response
+            //return response
 
-        return res.status(200).json({
-            message: 'hi it works',
-            params,
-            userToSave
+            return res.status(200).json({
+                status: 'success',
+                message: 'user saved',
+                savedUser
+            })
+
         })
+
 
 
 
