@@ -1,6 +1,10 @@
 //Impor model
 const User = require("../models/user")
+
 const bcrypt = require("bcrypt")
+
+//Importing services
+const jwt = require('../services/jwt')
 
 //Test actions
 const testUser = (req, res) => {
@@ -113,7 +117,7 @@ const login = (req, res) => {
 
             }
             //if correct return token
-            let token = false
+            let token = jwt.createToken(userFound)
             //or return user data
 
             return res.status(200).json({
