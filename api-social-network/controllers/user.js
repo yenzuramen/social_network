@@ -10,7 +10,7 @@ const jwt = require('../services/jwt')
 const testUser = (req, res) => {
     return res.status(200).send({
         message: "Message sent from controllers/users.js",
-        user:req.user
+        user: req.user
     })
 }
 
@@ -139,10 +139,43 @@ const login = (req, res) => {
 
 }
 
+//get user info for the profile
+const profile = async (req, res) => {
+    //Get user id from url param
+    const id = req.params.id
+
+    //Query to get user data
+    //let test = await User.findById(id).exec() //debe ir dentro de un trycatch
+    User.findById(id)
+    .select({password:0,role:0})
+        .exec((error, userFound) => {
+            if (error || !userFound) {
+                return res.status(400).json({
+                    status: 'success',
+                    message: 'user NOT found',
+                    // test
+                })
+            }
+            console.log('-----------');
+            console.log(userFound);
+
+            //Postertiormente informacion de folow
+            //Return result
+            return res.status(200).json({
+                status: 'success',
+                message: 'user found',
+                user: userFound
+                // test
+            })
+        })
+
+
+}
 
 //export actions
 module.exports = {
     testUser,
     saveUser,
-    login
+    login,
+    profile
 }

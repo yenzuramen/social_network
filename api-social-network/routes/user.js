@@ -9,5 +9,10 @@ const {auth} = require('../middlewares/auth')
 router.get("/test-user", auth , userController.testUser)
 router.post("/save-user", userController.saveUser)
 router.post("/log-in", userController.login)
+
+router.get("/profile/:id",auth,userController.profile)
+
+
+
 //Export Router
 module.exports = router
