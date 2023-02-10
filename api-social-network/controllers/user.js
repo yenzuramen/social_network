@@ -64,8 +64,8 @@ const saveUser = (req, res) => {
 
         //save user on database
         userToSave.save((error, savedUser) => {
-            if (error || !savedUser)  return res.status(500).json({   status: 'error',   message: 'couldnt save user' })
-     
+            if (error || !savedUser) return res.status(500).json({ status: 'error', message: 'couldnt save user' })
+
 
             //return response
 
@@ -76,11 +76,60 @@ const saveUser = (req, res) => {
             })
 
         })
-
-
-
-
     })
+}
+
+const login = (req, res) => {
+    //Get params from body
+    const params = req.body;
+
+    if (!params.email || !params.password) {
+        return res.status(400).json({
+            status: 'error',
+            message: 'not complete data'
+        })
+    }
+
+    //Search user on bd
+    User.findOne({ email: params.email.toLowerCase() })
+        // .select({ "password": 0 })
+        .exec((error, userFound) => {
+
+            if (error || !userFound) {
+                return res.status(400).json({
+                    status: 'error',
+                    message: 'not found'
+                })
+            }
+
+            //Validate password
+            let pwd = bcrypt.compareSync(params.password, userFound.password)
+            if (!pwd) {
+
+                return res.status(400).json({
+                    status: 'error',
+                    message: 'contraseña incorrecta'
+                })
+
+            }
+            //if correct return token
+            let token = false
+            //or return user data
+
+            return res.status(200).json({
+                status: 'success',
+                message: 'user found',
+                userFound: {
+                    name: userFound.name,
+                    nickname: userFound.nickname,
+                    id: userFound._id
+                },
+                token
+            })
+
+        })
+
+
 
 
 }
@@ -89,5 +138,6 @@ const saveUser = (req, res) => {
 //export actions
 module.exports = {
     testUser,
-    saveUser
+    saveUser,
+    login
 }
