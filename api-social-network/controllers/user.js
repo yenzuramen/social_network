@@ -2,7 +2,7 @@
 const User = require("../models/user")
 
 const bcrypt = require("bcrypt")
-
+const mongoosePagination = require("mongoose-pagination")
 //Importing services
 const jwt = require('../services/jwt')
 
@@ -147,7 +147,7 @@ const profile = async (req, res) => {
     //Query to get user data
     //let test = await User.findById(id).exec() //debe ir dentro de un trycatch
     User.findById(id)
-    .select({password:0,role:0})
+        .select({ password: 0, role: 0 })
         .exec((error, userFound) => {
             if (error || !userFound) {
                 return res.status(400).json({
@@ -172,10 +172,49 @@ const profile = async (req, res) => {
 
 }
 
+//Lista de usuarios con paginacion
+const listUsers = (req, res) => {
+    let page = 1;
+    //Get current page
+    console.log(req.params.page);
+
+    if (req.params.page) page = parseInt(req.params.page);
+
+    //Consult to mongoose pagination (current page, items per page)
+    let itemsPerPage = 4;
+
+    User.find()
+        .sort('_id')
+        .paginate(page, itemsPerPage, (error, users, total) => {
+            if (error || !users) {
+                return res.status(500).json({
+                    status: 'error',
+                    message: 'Query error or users not found',
+                })
+            }
+
+
+            //posteriormente info de follows
+
+            //Return result
+            return res.status(200).json({
+                status: 'success',
+                page,
+                itemsPerPage,
+                total,
+                users,
+                pages: Math.ceil(total/itemsPerPage)
+            })
+
+        })
+
+}
+
 //export actions
 module.exports = {
     testUser,
     saveUser,
     login,
-    profile
+    profile,
+    listUsers
 }

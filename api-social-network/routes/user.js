@@ -11,6 +11,7 @@ router.post("/save-user", userController.saveUser)
 router.post("/log-in", userController.login)
 
 router.get("/profile/:id",auth,userController.profile)
+router.get("/list-users/:page?",auth,userController.listUsers)
 
 
 
