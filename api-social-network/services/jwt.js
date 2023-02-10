@@ -5,24 +5,25 @@ const moment = require("moment")
 const secret = "SCRT_KEY_1002231058";
 
 //Create function to generate tokens
-exports.createToken = (user) => {
+createToken = (user) => {
 
     const payload = {
         id: user._id,
         name: user.name,
         surname: user.name,
         nickname: user.nickname,
-        emanil: user.email,
+        email: user.email,
         role: user.role,
         image: user.image,
-        iat: moment().unix, //momento en el que estamos generando el token
-        exp: moment().add(30, "days").unix //expiracion
+        iat: moment().unix(), //momento en el que estamos generando el token
+        exp: moment().add(30, "days").unix() //expiracion
     }
 
     //Return JWT codified
     return jwt.encode(payload, secret)
 }
 
-// module.exports = {
-//     createToken
-// }
+module.exports = {
+    secret,
+    createToken
+}
