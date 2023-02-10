@@ -192,8 +192,6 @@ const listUsers = (req, res) => {
                     message: 'Query error or users not found',
                 })
             }
-
-
             //posteriormente info de follows
 
             //Return result
@@ -203,10 +201,104 @@ const listUsers = (req, res) => {
                 itemsPerPage,
                 total,
                 users,
-                pages: Math.ceil(total/itemsPerPage)
+                pages: Math.ceil(total / itemsPerPage)
             })
 
         })
+
+}
+
+const update = (req, res) => {
+    //Get user info to update
+    let userIdentity = req.user;
+    let userToUpdate = req.body;
+
+    //Delete extra attrib
+    delete userToUpdate.iat;
+    delete userToUpdate.exp;
+    delete userToUpdate.role;
+    delete userToUpdate.image;
+
+    //Validate if user exists y Si llega password cifrarla
+
+    //validate that it doesnt exist already
+    User.find({
+        $or: [
+            { email: userToUpdate.email.toLowerCase() },
+            { nickname: userToUpdate.nickname.toLowerCase() }
+        ]
+    }).exec(async (error, users) => {
+        if (error) {
+            return res.status(400).json({
+                status: 'error',
+                message: 'Error consulting to db'
+            })
+        }
+
+        // if (users.length >= 1) {
+        //     return res.status(200).json({
+        //         status: 'succes',
+        //         message: 'username or email already exist'
+        //     })
+        // }
+
+        //comprobar que el usuario que edita es el usuario logeado
+        let userIsset = false;
+        users.forEach(user => {
+            if (user && user._id != userIdentity.id) {
+                userIsset = true;
+            }
+        })
+
+        if (userIsset) {
+            return res.status(400).json({
+                status: 'success',
+                message: 'el usuario ya eiste'
+            })
+        }
+        // bcrypt.hash(userToSave.password, 10, (error, pwdHashed) => {
+        //     console.log(pwdHashed);
+        //     userToSave.password = pwdHashed;
+        //     console.log(userToSave);
+        // })
+
+        if (userToUpdate.password) {
+            //cipher password (data to ciph, iteration num)
+            let hashedPwd = await bcrypt.hash(userToUpdate.password, 10)
+            userToUpdate.password = hashedPwd
+        }
+
+        try {
+            //Search and update
+            let userUpdated = await User.findByIdAndUpdate(userIdentity.id, userToUpdate, { new: true });
+            if (!userUpdated) {
+                return res.status(500).json({
+                    status: 'error',
+                    message: 'Error updating'
+                })
+            }
+            //Return result
+            return res.status(200).json({
+                status: 'success',
+                message: 'update user method',
+                userUpdated,
+                userIdentity,
+                userToUpdate
+
+            })
+
+        } catch (error) {
+            console.log('entra aqui');
+            // console.log(error);
+
+            return res.status(500).json({
+                status: 'error',
+                message: 'Error updating'
+            })
+
+        }
+    })
+
 
 }
 
@@ -216,5 +308,6 @@ module.exports = {
     saveUser,
     login,
     profile,
-    listUsers
+    listUsers,
+    update
 }
