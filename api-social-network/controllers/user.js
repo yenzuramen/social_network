@@ -5,6 +5,8 @@ const bcrypt = require("bcrypt")
 const mongoosePagination = require("mongoose-pagination")
 //Importing services
 const jwt = require('../services/jwt')
+const fs = require("fs")
+const path = require("path")
 
 //Test actions
 const testUser = (req, res) => {
@@ -294,14 +296,82 @@ const update = (req, res) => {
 
 }
 
-const uploadAvatar = (req,res) => { 
-    return res.status(200).json({
-        status: 'success',
-        message: 'upload avatat method',
-        identifiedUser: req.user,
-        file: req.file
+const uploadAvatar = (req, res) => {
+
+    //Get file
+    if (!req.file) {
+        return res.status(404).json({
+            status: 'error',
+            message: 'Error sending image'
+        })
+    }
+
+    //Get file name and ext
+    let originalName = req.file.originalname;
+    let imgSplit = originalName.split('\.')
+    let ext = imgSplit[1].toLowerCase()
+
+    //validate ext
+    if (ext !== 'png' && ext !== 'jpeg' && ext !== 'jpg' && ext !== 'gif') {
+        const filePath = req.file.path
+        const deletedFile = fs.unlinkSync(filePath)    //delete file if wrong
+        console.log(ext !== 'jpg');
+        return res.status(400).json({
+            status: 'error',
+            message: 'file type not allowed',
+            ext
+        })
+    }
+
+    //if valid  //save on bd if right
+    User.findOneAndUpdate(req.user.id, { image: req.file.filename }, { new: true }, (error, updatedUser) => {
+
+        if (error || !updatedUser) {
+            return res.status(400).json({
+                status: 'error',
+                message: 'couldnt update user image'
+            })
+        }
+
+        return res.status(200).json({
+            status: 'success',
+            user: updatedUser,
+            file: req.file
+        })
     })
- }
+
+
+}
+
+const showAvatar = (req, res) => {
+    //get url param
+    const filename = req.params.filename;
+
+    //get image real path
+    const realPath = "./uploads/user-avatar/" + filename;
+
+    console.log(req.params);
+
+    //validate existence
+    fs.stat(realPath, (error, exists) => {
+        if (error) {
+            return res.status(400).json({
+                status: 'error',
+                message: 'couldnt get user image'
+            })
+        }
+
+        //return file 
+
+        return res.sendFile(
+            path.resolve(realPath)
+        )
+
+    })
+
+
+
+}
 
 //export actions
 module.exports = {
@@ -311,5 +381,6 @@ module.exports = {
     profile,
     listUsers,
     update,
-    uploadAvatar
+    uploadAvatar,
+    showAvatar
 }

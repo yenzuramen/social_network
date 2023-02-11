@@ -29,6 +29,7 @@ router.put("/update", auth, userController.update)
 
 router.post("/upload-avatar", [auth, uploadsMW.single("file0")], userController.uploadAvatar)
 
+router.get("/show-avatar/:filename", auth, userController.showAvatar)
 
 
 //Export Router
