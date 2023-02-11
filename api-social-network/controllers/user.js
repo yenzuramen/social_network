@@ -235,13 +235,6 @@ const update = (req, res) => {
             })
         }
 
-        // if (users.length >= 1) {
-        //     return res.status(200).json({
-        //         status: 'succes',
-        //         message: 'username or email already exist'
-        //     })
-        // }
-
         //comprobar que el usuario que edita es el usuario logeado
         let userIsset = false;
         users.forEach(user => {
@@ -299,8 +292,16 @@ const update = (req, res) => {
         }
     })
 
-
 }
+
+const uploadAvatar = (req,res) => { 
+    return res.status(200).json({
+        status: 'success',
+        message: 'upload avatat method',
+        identifiedUser: req.user,
+        file: req.file
+    })
+ }
 
 //export actions
 module.exports = {
@@ -309,5 +310,6 @@ module.exports = {
     login,
     profile,
     listUsers,
-    update
+    update,
+    uploadAvatar
 }
