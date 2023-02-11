@@ -265,7 +265,7 @@ const update = (req, res) => {
 
         try {
             //Search and update
-            let userUpdated = await User.findByIdAndUpdate(userIdentity.id, userToUpdate, { new: true });
+            let userUpdated = await User.findByIdAndUpdate({_id:userIdentity.id}, userToUpdate, { new: true });
             if (!userUpdated) {
                 return res.status(500).json({
                     status: 'error',
@@ -324,7 +324,7 @@ const uploadAvatar = (req, res) => {
     }
 
     //if valid  //save on bd if right
-    User.findOneAndUpdate(req.user.id, { image: req.file.filename }, { new: true }, (error, updatedUser) => {
+    User.findOneAndUpdate({_id:req.user.id}, { image: req.file.filename }, { new: true }, (error, updatedUser) => {
 
         if (error || !updatedUser) {
             return res.status(400).json({
