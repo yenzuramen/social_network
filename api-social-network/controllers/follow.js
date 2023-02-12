@@ -1,6 +1,8 @@
 const Follow = require("../models/follow")
 const User = require("../models/user")
 
+const mongoosePagination = require("mongoose-pagination")
+
 //Test actions
 const testFollow = (req, res) => {
 
@@ -83,13 +85,67 @@ const unfollow = (req, res) => {
 }
 
 
-//List following users
+//List following users by Id
+const followingList = (req, res) => {
+    //get current user id
+    let userId = req.user.id;
+
+    //know if id comes from url param
+    if (req.params.id) {
+        userId = req.params.id;
+    }
+
+    //know if pages come from url param
+    let page = 1
+    if (req.params.page) {
+        page = req.params.page
+    }
+    //Users per pages
+    let usersPerPage = 5;
+
+    //Find follows, get their info and populate
+    Follow.find({ user: userId })
+        .populate("user followed", "-password -role -__v")
+        .paginate(page, usersPerPage, (error, followsFound, total) => {
+
+            if (error) {
+
+                return res.status(400).json({
+                    status: 'error',
+                    message: 'Theres been an error'
+                })
+
+            }
+            console.log(followsFound);
+            //from this list
+            //how many users follow the one in session (works for when consulting from other people)
+
+            return res.status(200).json({
+                status: 'success',
+                message: 'Following List',
+                total,
+                totalPages: Math.ceil(total/usersPerPage),
+                followsFound
+            })
+        }
+        )
+
+
+}
 
 //List user followers
+const followersList = (req, res) => {
+    return res.status(200).json({
+        status: 'success',
+        message: 'Followers List'
+    })
+}
 
 //export actions
 module.exports = {
     testFollow,
     save,
-    unfollow
+    unfollow,
+    followingList,
+    followersList
 }
