@@ -1,5 +1,6 @@
 const Follow = require("../models/follow")
 const User = require("../models/user")
+const FollowInfo = require("../services/followInfo")
 
 const mongoosePagination = require("mongoose-pagination")
 
@@ -106,7 +107,7 @@ const followingList = (req, res) => {
     //Find follows, get their info and populate
     Follow.find({ user: userId })
         .populate("user followed", "-password -role -__v")
-        .paginate(page, usersPerPage, (error, followsFound, total) => {
+        .paginate(page, usersPerPage, async (error, followsFound, total) => {
 
             if (error) {
 
@@ -120,12 +121,19 @@ const followingList = (req, res) => {
             //from this list
             //how many users follow the one in session (works for when consulting from other people)
 
+            let { following, followers} = await FollowInfo.mutualsIds(req.user.id)
+            console.log('tssssssssssssssssssss');
+            console.log(following);
+            console.log(followers);
+
             return res.status(200).json({
                 status: 'success',
                 message: 'Following List',
                 total,
-                totalPages: Math.ceil(total/usersPerPage),
-                followsFound
+                totalPages: Math.ceil(total / usersPerPage),
+                followsFound,
+                following,
+                followers
             })
         }
         )
@@ -135,6 +143,8 @@ const followingList = (req, res) => {
 
 //List user followers
 const followersList = (req, res) => {
+
+
     return res.status(200).json({
         status: 'success',
         message: 'Followers List'
