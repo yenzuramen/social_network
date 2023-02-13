@@ -121,7 +121,7 @@ const followingList = (req, res) => {
             //from this list
             //how many users follow the one in session (works for when consulting from other people)
 
-            let { following, followers} = await FollowInfo.mutualsIds(req.user.id)
+            let { following, followers } = await FollowInfo.mutualsIds(req.user.id)
             console.log('tssssssssssssssssssss');
             console.log(following);
             console.log(followers);
@@ -143,12 +143,55 @@ const followingList = (req, res) => {
 
 //List user followers
 const followersList = (req, res) => {
+    //get current user id
+    let userId = req.user.id;
 
+    //know if id comes from url param
+    if (req.params.id) {
+        userId = req.params.id;
+    }
 
-    return res.status(200).json({
-        status: 'success',
-        message: 'Followers List'
-    })
+    //know if pages come from url param
+    let page = 1
+    if (req.params.page) {
+        page = req.params.page
+    }
+    //Users per pages
+    let usersPerPage = 5;
+     //Find follows, get their info and populate
+     Follow.find({ followed: userId })
+     .populate("user", "-password -role -__v")
+     .paginate(page, usersPerPage, async (error, followsFound, total) => {
+
+         if (error) {
+
+             return res.status(400).json({
+                 status: 'error',
+                 message: 'Theres been an error'
+             })
+
+         }
+         console.log(followsFound);
+         //from this list
+         //how many users follow the one in session (works for when consulting from other people)
+
+         let { following, followers } = await FollowInfo.mutualsIds(req.user.id)
+        //  console.log('tssssssssssssssssssss');
+         console.log(following);
+         console.log(followers);
+
+         return res.status(200).json({
+             status: 'success',
+             message: 'Following List',
+             total,
+             totalPages: Math.ceil(total / usersPerPage),
+             followsFound,
+             following,
+             followers
+         })
+     }
+     )
+
 }
 
 //export actions

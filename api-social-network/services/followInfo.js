@@ -27,22 +27,31 @@ const mutualsIds = async (identifiedUserId) => {
 
 
         return {
-            following:followingClean,
-            followers:followersClean
+            following: followingClean,
+            followers: followersClean
         }
     } catch (error) {
         return {};
     }
 
 
-
-
 }
 
+//Individual
 const isFollowing = async (identifiedUserId, profileUserId) => {
+    //get following info
+    //si lo sigo
+    let following = await Follow.findOne({ "user": identifiedUserId, "followed": profileUserId })
+    //si el me sigue
+    let follower = await Follow.findOne({ "user": profileUserId, "followed": identifiedUserId })
+    return {
+        following,
+        follower
+    }
 
 }
 
 module.exports = {
-    mutualsIds
+    mutualsIds,
+    isFollowing
 }

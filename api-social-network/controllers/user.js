@@ -7,6 +7,7 @@ const mongoosePagination = require("mongoose-pagination")
 const jwt = require('../services/jwt')
 const fs = require("fs")
 const path = require("path")
+const followInfo = require("../services/followInfo")
 
 //Test actions
 const testUser = (req, res) => {
@@ -150,7 +151,7 @@ const profile = async (req, res) => {
     //let test = await User.findById(id).exec() //debe ir dentro de un trycatch
     User.findById(id)
         .select({ password: 0, role: 0 })
-        .exec((error, userFound) => {
+        .exec(async (error, userFound) => {
             if (error || !userFound) {
                 return res.status(400).json({
                     status: 'success',
@@ -162,11 +163,15 @@ const profile = async (req, res) => {
             console.log(userFound);
 
             //Postertiormente informacion de folow
+            const returnedFollowInfo = await followInfo.isFollowing(req.user.id, id)
+
             //Return result
             return res.status(200).json({
                 status: 'success',
                 message: 'user found',
-                user: userFound
+                user: userFound,
+                following: returnedFollowInfo.following,
+                isFollower: returnedFollowInfo.follower
                 // test
             })
         })
@@ -187,14 +192,17 @@ const listUsers = (req, res) => {
 
     User.find()
         .sort('_id')
-        .paginate(page, itemsPerPage, (error, users, total) => {
+        .paginate(page, itemsPerPage, async (error, users, total) => {
             if (error || !users) {
                 return res.status(500).json({
                     status: 'error',
                     message: 'Query error or users not found',
                 })
             }
+
             //posteriormente info de follows
+            let { following, followers } = await followInfo.mutualsIds(req.user.id)
+
 
             //Return result
             return res.status(200).json({
@@ -203,7 +211,9 @@ const listUsers = (req, res) => {
                 itemsPerPage,
                 total,
                 users,
-                pages: Math.ceil(total / itemsPerPage)
+                pages: Math.ceil(total / itemsPerPage),
+                following,
+                followers
             })
 
         })
@@ -265,7 +275,7 @@ const update = (req, res) => {
 
         try {
             //Search and update
-            let userUpdated = await User.findByIdAndUpdate({_id:userIdentity.id}, userToUpdate, { new: true });
+            let userUpdated = await User.findByIdAndUpdate({ _id: userIdentity.id }, userToUpdate, { new: true });
             if (!userUpdated) {
                 return res.status(500).json({
                     status: 'error',
@@ -324,7 +334,7 @@ const uploadAvatar = (req, res) => {
     }
 
     //if valid  //save on bd if right
-    User.findOneAndUpdate({_id:req.user.id}, { image: req.file.filename }, { new: true }, (error, updatedUser) => {
+    User.findOneAndUpdate({ _id: req.user.id }, { image: req.file.filename }, { new: true }, (error, updatedUser) => {
 
         if (error || !updatedUser) {
             return res.status(400).json({
