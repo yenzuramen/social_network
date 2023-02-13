@@ -106,7 +106,7 @@ const followingList = (req, res) => {
 
     //Find follows, get their info and populate
     Follow.find({ user: userId })
-        .populate("user followed", "-password -role -__v")
+        .populate("user followed", "-password -role -__v -email")
         .paginate(page, usersPerPage, async (error, followsFound, total) => {
 
             if (error) {

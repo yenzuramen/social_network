@@ -8,7 +8,8 @@ const jwt = require('../services/jwt')
 const fs = require("fs")
 const path = require("path")
 const followInfo = require("../services/followInfo")
-
+const Follow = require("../models/follow");
+const Post = require("../models/post")
 //Test actions
 const testUser = (req, res) => {
     return res.status(200).send({
@@ -191,6 +192,7 @@ const listUsers = (req, res) => {
     let itemsPerPage = 4;
 
     User.find()
+        .select("-password -email -role -__v")
         .sort('_id')
         .paginate(page, itemsPerPage, async (error, users, total) => {
             if (error || !users) {
@@ -271,6 +273,8 @@ const update = (req, res) => {
             //cipher password (data to ciph, iteration num)
             let hashedPwd = await bcrypt.hash(userToUpdate.password, 10)
             userToUpdate.password = hashedPwd
+        } else {
+            delete userToUpdate.password
         }
 
         try {
@@ -383,6 +387,35 @@ const showAvatar = (req, res) => {
 
 }
 
+const followNumbers = async (req, res) => {
+    let userId = req.user.id;
+
+    if (req.params.id) {
+        userId = req.params.id;
+    }
+
+    try {
+        const following = await Follow.count({ "user": userId });
+
+        const followers = await Follow.count({ "followed": userId });
+
+        const posts = await Post.count({ "user": userId });
+
+        return res.status(200).send({
+            userId,
+            following,
+            followers,
+            posts
+        });
+    } catch (error) {
+        return res.status(500).send({
+            status: "error",
+            message: "Error en los contadores",
+            error
+        });
+    }
+}
+
 //export actions
 module.exports = {
     testUser,
@@ -392,5 +425,6 @@ module.exports = {
     listUsers,
     update,
     uploadAvatar,
-    showAvatar
+    showAvatar,
+    followNumbers
 }
