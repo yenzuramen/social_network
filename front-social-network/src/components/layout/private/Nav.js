@@ -1,7 +1,10 @@
 import React from 'react'
 import avatar from '../../../assets/img/user.png'
+import useAuth from '../../../hooks/useAuth'
 
 export const Nav = () => {
+
+    const {logout} = useAuth()
     return (
         <nav className="navbar__container-lists">
 
@@ -47,7 +50,7 @@ export const Nav = () => {
                     </a>
                 </li>
                 <li className="list-end__item">
-                    <a href="#" className="list-end__link">
+                    <a onClick={logout} className="list-end__link">
                     <i className="fa-solid fa-arrow-right-from-bracket"></i>
                         <span className="list-end__name">Log out</span>
                     </a>

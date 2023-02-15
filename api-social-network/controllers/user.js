@@ -145,9 +145,16 @@ const login = (req, res) => {
 
 //get user info for the profile
 const profile = async (req, res) => {
-    //Get user id from url param
-    const id = req.params.id
+    //------------correction
+    let id = '';
 
+
+    //Get user id from url param
+    id = req.params.id
+
+    if (!req.params.id) {
+        id = req.user.id
+    }
     //Query to get user data
     //let test = await User.findById(id).exec() //debe ir dentro de un trycatch
     User.findById(id)

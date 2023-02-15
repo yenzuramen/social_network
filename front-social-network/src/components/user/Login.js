@@ -1,11 +1,15 @@
 import React, { useState } from 'react'
+import { Navigate } from 'react-router-dom';
 import { Global } from '../../helpers/Global';
+import useAuth from '../../hooks/useAuth';
 import { useForm } from '../../hooks/useForm'
 
 export const Login = () => {
 
   const { form, updateFormObj } = useForm({});
   const [loged, setLoged] = useState()
+
+  const { setAuth } = useAuth();
 
   const logIn = async (e) => {
     e.preventDefault()
@@ -30,6 +34,14 @@ export const Login = () => {
       //save on local Storage
       localStorage.setItem("sessionToken", data.token);
       console.log(localStorage.getItem("sessionToken"));
+
+      // setAuth(data.user)
+      setTimeout(() => {
+        console.log('navigate to social');
+        window.location.reload()
+      }, 1500)
+
+
     } else {
       setLoged('not-logged')
     }

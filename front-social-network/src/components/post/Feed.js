@@ -1,7 +1,9 @@
 import React from 'react'
 import avatar from '../../assets/img/user.png'
+import useAuth from '../../hooks/useAuth'
 
 const Feed = () => {
+
     return (
         <>
             <header className="content__header">
@@ -17,7 +19,7 @@ const Feed = () => {
 
                         <div className="post__image-user">
                             <a href="#" className="post__image-link">
-                                <img src={avatar} className="post__user-image" alt="Foto de perfil"/>
+                                <img src={avatar} className="post__user-image" alt="Foto de perfil" />
                             </a>
                         </div>
 
@@ -52,7 +54,7 @@ const Feed = () => {
 
                         <div className="post__image-user">
                             <a href="#" className="post__image-link">
-                                <img src={avatar} className="post__user-image" alt="Foto de perfil"/>
+                                <img src={avatar} className="post__user-image" alt="Foto de perfil" />
                             </a>
                         </div>
 
@@ -86,7 +88,7 @@ const Feed = () => {
 
                         <div className="post__image-user">
                             <a href="#" className="post__image-link">
-                                <img src={avatar} className="post__user-image" alt="Foto de perfil"/>
+                                <img src={avatar} className="post__user-image" alt="Foto de perfil" />
                             </a>
                         </div>
 
@@ -122,7 +124,7 @@ const Feed = () => {
 
                         <div className="post__image-user">
                             <a href="#" className="post__image-link">
-                                <img src={avatar} className="post__user-image" alt="Foto de perfil"/>
+                                <img src={avatar} className="post__user-image" alt="Foto de perfil" />
                             </a>
                         </div>
 

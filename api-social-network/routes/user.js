@@ -22,7 +22,7 @@ router.get("/test-user", auth, userController.testUser)
 router.post("/save-user", userController.saveUser)
 router.post("/log-in", userController.login)
 
-router.get("/profile/:id", auth, userController.profile)
+router.get("/profile/:id?", auth, userController.profile)
 router.get("/list-users/:page?", auth, userController.listUsers)
 
 router.put("/update", auth, userController.update)
