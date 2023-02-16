@@ -255,10 +255,34 @@ body {
 }
 
 
-.post__button:hover{
-    background-color: var(--color-background-btn-delete-hover);
-    border-color: var(--color-border-btn-delete-hover);
+.post__button {
+background-color: (var(--color-background-btn-success));
+background-color: (var(--color-border-btn-success-hover));
 }
+
+
+.follow__button{
+    background-color:#4cae4c;
+    border-color:#398439;
+    text-decoration: none;
+    padding: 10px;
+    color: white;
+    border-radius: 5px;
+    border-width: 0px;
+    transition: all 1s;
+}
+
+.unfollow__button{
+    background-color:#cf3f3f;
+    border-color:#5a2222;
+    text-decoration: none;
+    padding: 10px;
+    color: white;
+    border-radius: 5px;
+    border-width: 0px;
+    transition: all 1s;
+}
+
 
 .content__container-btn{
     width: 100%;
