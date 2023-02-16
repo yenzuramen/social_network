@@ -1,5 +1,7 @@
 import React from 'react'
 import { BrowserRouter, Routes, Route, Navigate, Link } from 'react-router-dom'
+import { Followers } from '../components/follow/Followers'
+import { Following } from '../components/follow/Following'
 import { PrivateLayout } from '../components/layout/private/PrivateLayout'
 import { PublicLayout } from '../components/layout/public/PublicLayout'
 import Feed from '../components/post/Feed'
@@ -25,6 +27,8 @@ export const Routing = () => {
                         <Route path='feed' element={<Feed />} />
                         <Route path='discover-people' element={<DiscoverUsers />} />
                         <Route path='config-user' element={<ConfigUser />} />
+                        <Route path='following/:idToConsult' element={<Following />} />
+                        <Route path='followers/:idToConsult' element={<Followers />} />
                     </Route>
 
                     <Route path='/*' element={<><h1>Error 404</h1><hr /><Link to="/">Back to home</Link></>} />

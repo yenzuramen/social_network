@@ -9,7 +9,7 @@ const { auth } = require('../middlewares/auth')
 router.get("/test-follow", followController.testFollow)
 router.post("/save-follow", auth, followController.save)
 router.delete("/unfollow/:userToUnfollow", auth, followController.unfollow)
-router.post('/following-list/:id?/:page?',auth,followController.followingList)
-router.post('/follower-list/:id?/:page?',auth,followController.followersList)
+router.get('/following-list/:id?/:page?',auth,followController.followingList)
+router.get('/follower-list/:id?/:page?',auth,followController.followersList)
 //Export Router
 module.exports = router
