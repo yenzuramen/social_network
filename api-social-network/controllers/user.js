@@ -266,7 +266,7 @@ const update = (req, res) => {
 
         if (userIsset) {
             return res.status(400).json({
-                status: 'success',
+                status: 'error',
                 message: 'el usuario ya eiste'
             })
         }

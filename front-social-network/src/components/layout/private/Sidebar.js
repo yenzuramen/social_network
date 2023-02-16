@@ -27,7 +27,6 @@ export const Sidebar = () => {
                                 :
                                 <img src={Global.url + 'user/show-avatar/' + auth.image} className="container-avatar__img" alt="Foto de perfil" />
                             }
-
                         </div>
 
                         <div className="general-info__container-names">

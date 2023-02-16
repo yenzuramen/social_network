@@ -3,6 +3,8 @@ import { BrowserRouter, Routes, Route, Navigate, Link } from 'react-router-dom'
 import { PrivateLayout } from '../components/layout/private/PrivateLayout'
 import { PublicLayout } from '../components/layout/public/PublicLayout'
 import Feed from '../components/post/Feed'
+import { ConfigUser } from '../components/user/ConfigUser'
+import { DiscoverUsers } from '../components/user/DiscoverUsers'
 import { Login } from '../components/user/Login'
 import { SignUp } from '../components/user/SignUp'
 import { AuthProvider } from '../context/AuthProvider'
@@ -21,6 +23,8 @@ export const Routing = () => {
                     <Route path='/social' element={<PrivateLayout />}>
                         <Route index element={<Feed />} />
                         <Route path='feed' element={<Feed />} />
+                        <Route path='discover-people' element={<DiscoverUsers />} />
+                        <Route path='config-user' element={<ConfigUser />} />
                     </Route>
 
                     <Route path='/*' element={<><h1>Error 404</h1><hr /><Link to="/">Back to home</Link></>} />

@@ -456,6 +456,7 @@ button{
     background-color: #ea5e51;
     color:rgb(73, 9, 6);
 }
+.edit-form,
 .login-form,
 .signUp-form{
     margin-top: 10px;
