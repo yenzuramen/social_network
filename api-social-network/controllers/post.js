@@ -18,8 +18,9 @@ const save = (req, res) => {
 
     //get body data
     const params = req.body
+    console.log(params.text);
 
-    if (!params.text) {
+    if (params.text == undefined) {
         return res.status(400).json({
             status: "error",
             message: "Post doesn't contain any text",

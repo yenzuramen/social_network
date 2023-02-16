@@ -1,14 +1,82 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import avatar from '../../../assets/img/user.png'
 import { Global } from '../../../helpers/Global';
 import useAuth from '../../../hooks/useAuth'
+import { useForm } from '../../../hooks/useForm';
 
 export const Sidebar = () => {
 
     const { auth, counters } = useAuth();
 
-    console.log(auth);
+    const { form, updateFormObj } = useForm({});
+
+    const [isSaved, setIsSaved] = useState('')
+
+    const savePost = async (e) => {
+        e.preventDefault();
+
+        //get data from form
+        let newPost = form;
+
+        //Request to save on db
+        let request = await fetch(Global.url + 'post/save-post', {
+            method: "POST",
+            body: JSON.stringify(newPost),
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": localStorage.getItem('sessionToken')
+            }
+
+        })
+
+        let data = await request.json()
+
+        console.log(data);
+
+        if (data.status == 'success') {
+            setIsSaved('saved')
+            console.log('aver');
+
+            //upload image
+            const fileInput = document.querySelector('#file')
+
+            if (fileInput.files[0]) {
+
+                const formData = new FormData();
+                formData.append(
+                    "file0", fileInput.files[0]
+                )
+
+                let requestUpload = await fetch(Global.url + 'post/upload/' + data.savedPost._id, {
+                    method: "POST",
+                    body: formData,
+                    headers: {
+                        // "Content-Type": "application/json",
+                        "Authorization": localStorage.getItem('sessionToken')
+                    }
+
+                })
+
+                let dataUpload = await requestUpload.json()
+
+                if (dataUpload.status == 'success') {
+                    setIsSaved('saved')
+                }
+                console.log(dataUpload);
+
+            }
+
+            let postForm = document.querySelector('#post-form')
+            postForm.reset();
+
+
+        } else {
+            setIsSaved('not-saved')
+        }
+
+
+    }
 
     return (
         <aside className="layout__aside">
@@ -66,19 +134,29 @@ export const Sidebar = () => {
 
                 <div className="aside__container-form">
 
-                    <form className="container-form__form-post">
+                    {isSaved == 'saved' ?
+                        <strong className='sign-up-alert alert-success'>
+                            Posted!
+                        </strong> : ''}
+
+                    {isSaved == 'not-saved' ?
+                        <strong className='sign-up-alert alert-error'>
+                            Error posting.
+                        </strong> : ''}
+
+                    <form onSubmit={savePost} className="container-form__form-post" id="post-form">
 
                         <div className="form-post__inputs">
-                            <label htmlFor="post" className="form-post__label">¿Que estas pesando hoy?</label>
-                            <textarea name="post" className="form-post__textarea"></textarea>
+                            <label htmlFor="text" className="form-post__label">Post Something!</label>
+                            <textarea name="text" className="form-post__textarea" onChange={updateFormObj}></textarea>
                         </div>
 
                         <div className="form-post__inputs">
-                            <label htmlFor="image" className="form-post__label">Sube tu foto</label>
-                            <input type="file" name="image" className="form-post__image" />
+                            <label htmlFor="image" className="form-post__label"></label>
+                            <input type="file" name="file0" id="file" className="form-post__image" />
                         </div>
 
-                        <input type="submit" value="Enviar" className="form-post__btn-submit" disabled />
+                        <input type="submit" value="Post" className="form-post__btn-submit" />
 
                     </form>
 
