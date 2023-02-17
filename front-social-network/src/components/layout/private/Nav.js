@@ -30,7 +30,7 @@ export const Nav = () => {
 
             <ul className="container-lists__list-end">
                 <li className="list-end__item">
-                    <a href="#" className="list-end__link-image">
+                    <NavLink to={"/social/profile/" + auth._id} className="list-end__link-image">
                         {auth.image === 'default.png' ?
                             <img src={avatar} className="list-end__img" alt="Imagen de perfil" />
                             :
@@ -38,12 +38,12 @@ export const Nav = () => {
                         }
 
 
-                    </a>
+                    </NavLink>
                 </li>
                 <li className="list-end__item">
-                    <a href="#" className="list-end__link">
+                    <NavLink to={"/social/profile/" + auth._id} className="list-end__link">
                         <span className="list-end__name">{auth.nickname}</span>
-                    </a>
+                    </NavLink>
                 </li>
                 <li className="list-end__item">
                     <NavLink to='/social/config-user' className="list-end__link">

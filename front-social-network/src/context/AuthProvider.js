@@ -45,7 +45,7 @@ export const AuthProvider = ({ children }) => {
         })
 
         const dataCounters = await requestCounters.json()
-        console.log(dataCounters);
+        // console.log(dataCounters);
         //set auth state
         setAuth(data.user)
         setCounters(dataCounters)

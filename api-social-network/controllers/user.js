@@ -409,6 +409,7 @@ const followNumbers = async (req, res) => {
         const posts = await Post.count({ "user": userId });
 
         return res.status(200).send({
+            status: 'success',
             userId,
             following,
             followers,

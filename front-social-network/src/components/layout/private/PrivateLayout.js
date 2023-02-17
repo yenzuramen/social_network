@@ -7,8 +7,8 @@ import { Sidebar } from './Sidebar'
 export const PrivateLayout = () => {
     const { auth,loading } = useAuth();
 
-    console.log('private');
-    console.log(auth);
+    // console.log('private');
+    // console.log(auth);
     if (loading) {
         return (<h1>Loading...</h1>)
     } else {

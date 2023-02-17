@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import avatar from '../../../assets/img/user.png'
 import { Global } from '../../../helpers/Global';
 import useAuth from '../../../hooks/useAuth'
@@ -32,11 +32,11 @@ export const Sidebar = () => {
 
         let data = await request.json()
 
-        console.log(data);
+        ////console.log(data);
 
         if (data.status == 'success') {
             setIsSaved('saved')
-            console.log('aver');
+            ////console.log('aver');
 
             //upload image
             const fileInput = document.querySelector('#file')
@@ -63,7 +63,7 @@ export const Sidebar = () => {
                 if (dataUpload.status == 'success') {
                     setIsSaved('saved')
                 }
-                console.log(dataUpload);
+                //console.log(dataUpload);
 
             }
 
@@ -99,7 +99,7 @@ export const Sidebar = () => {
                         </div>
 
                         <div className="general-info__container-names">
-                            <a href="#" className="container-names__name">{auth.name} {auth.surname}</a>
+                            <NavLink to={"/social/profile/" + auth._id} className="container-names__name">{auth.name} {auth.surname}</NavLink>
                             <p className="container-names__nickname">{auth.nickname}</p>
                         </div>
                     </div>
@@ -121,10 +121,10 @@ export const Sidebar = () => {
 
 
                         <div className="stats__following">
-                            <Link to={'followers/' + auth._id} className="following__link">
+                            <NavLink to={"/social/profile/" + auth._id} className="following__link">
                                 <span className="following__title">Posts</span>
                                 <span className="following__number">{counters.posts}</span>
-                            </Link>
+                            </NavLink>
                         </div>
 
 

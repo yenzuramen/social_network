@@ -486,3 +486,22 @@ button{
 .signUp-form{
     margin-top: 10px;
 }
+
+.bio{
+    color: #5a6774;
+}
+.profile_info{
+    display: flex !important;
+}
+.profile_header{
+    display: flex !important;
+    justify-content: space-between;
+}
+
+.delete-button{
+    background-color: #cf2c2c;
+}
+
+.delete-button:hover{
+    background-color: #9b1717;
+}

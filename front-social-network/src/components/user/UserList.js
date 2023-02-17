@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import avatar from '../../assets/img/user.png'
 import { Global } from '../../helpers/Global'
 import useAuth from '../../hooks/useAuth'
@@ -68,20 +69,20 @@ export const UserList = ({ userList, setUserList, following, setFollowing, loadi
                         <div className="posts__post">
                             <div className="post__container">
                                 <div className="post__image-user">
-                                    <a href="#" className="post__image-link">
+                                    <Link to={"/social/profile/" + user._id} className="post__image-link">
                                         {user.image === 'default.png' ?
                                             <img src={avatar} className="post__user-image" alt="Foto de perfil" />
                                             : <img src={Global.url + 'user/show-avatar/' + user.image} className="post__user-image" alt="Foto de perfil" />
 
                                         }
 
-                                    </a>
+                                    </Link>
                                 </div>
 
                                 <div className="post__body">
 
                                     <div className="post__user-info">
-                                        <a href="#" className="user-info__name">{user.name} {user.surname}</a>
+                                        <Link to={"/social/profile/" + user._id} className="user-info__name">{user.name} {user.surname}</Link>
                                         <span className="user-info__divider"> | </span>
                                         <a href="#" className="user-info__create-date">{user.created_at}</a>
                                     </div>

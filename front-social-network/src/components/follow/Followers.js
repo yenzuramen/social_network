@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import { GetProfile } from '../../helpers/GetProfile'
 
 import { Global } from '../../helpers/Global'
 
@@ -14,10 +15,13 @@ export const Followers = () => {
     const [following, setFollowing] = useState([])
     const [followers, setFollowers] = useState([])
 
+    const [profile, setProfile] = useState({})
+
     const params = useParams();
 
     useEffect(() => {
         getUsers()
+        GetProfile(params.idToConsult, setProfile)
     }, [])
 
 
@@ -79,7 +83,7 @@ export const Followers = () => {
     return (
         <>
             <header className="content__header">
-                <h1 className="content__title">is Followed by </h1>
+                <h1 className="content__title">{profile.name} is Followed by:</h1>
                 {/* <button className="content__button">Mostrar nuevas</button> */}
             </header>
 

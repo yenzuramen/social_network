@@ -131,10 +131,10 @@ const getPostsFromUser = (req, res) => {
         .populate('user', '-password -__v -role -email')
         .paginate(page, itemsPerPage, (error, postsFound, total) => {
 
-            if (error || !postsFound || postsFound.length <= 0) {
+            if (error) {
                 return res.status(404).json({
                     status: "error",
-                    message: "coudnt find posts"
+                    message: "theres been an error"
                 })
             }
             return res.status(200).json({
