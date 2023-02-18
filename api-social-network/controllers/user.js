@@ -7,9 +7,13 @@ const mongoosePagination = require("mongoose-pagination")
 const jwt = require('../services/jwt')
 const fs = require("fs")
 const path = require("path")
+const { validate } = require("../helpers/validation")
+
 const followInfo = require("../services/followInfo")
 const Follow = require("../models/follow");
 const Post = require("../models/post")
+
+
 //Test actions
 const testUser = (req, res) => {
     return res.status(200).send({
@@ -34,6 +38,17 @@ const saveUser = (req, res) => {
         })
     }
     console.log('Passed validation');
+
+    try {
+        //Advance validation
+        validate(params)
+    } catch (error) {
+        return res.status(400).json({
+            status: 'error',
+            message: 'validation not passed'
+        })
+    }
+
 
 
     //validate that it doesnt exist already
