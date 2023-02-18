@@ -7,6 +7,14 @@ import './assets/css/normalize.css';
 import './assets/css/styles.css';
 import './assets/css/responsive.css';
 
+//Load time config 
+import TimeAgo from 'javascript-time-ago' 
+import en from 'javascript-time-ago/locale/en.json' 
+
+
+TimeAgo.addDefaultLocale(en);
+TimeAgo.addLocale(en);
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
 

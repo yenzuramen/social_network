@@ -82,7 +82,7 @@ export const Sidebar = () => {
         <aside className="layout__aside">
 
             <header className="aside__header">
-                <h1 className="aside__title">Hola, {auth.name}</h1>
+                <h1 className="aside__title">Hi! {auth.name}</h1>
             </header>
 
             <div className="aside__container">
