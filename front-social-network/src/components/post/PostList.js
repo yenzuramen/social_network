@@ -6,7 +6,7 @@ import { Global } from '../../helpers/Global'
 import useAuth from '../../hooks/useAuth'
 import ReactTimeAgo from 'react-time-ago'
 
-export const PostList = ({posts, postsPage, setPostsPage, showMore}) => {
+export const PostList = ({ posts, postsPage, setPostsPage, showMore }) => {
     const { auth } = useAuth();
 
     const nextPage = () => {
@@ -58,11 +58,14 @@ export const PostList = ({posts, postsPage, setPostsPage, showMore}) => {
                                     <div className="post__user-info">
                                         <Link to={"/social/profile/" + post.user._id} className="user-info__name">{post.user.name} {post.user.surname}</Link>
                                         <span className="user-info__divider"> | </span>
-                                        <a href="#" className="user-info__create-date"><ReactTimeAgo date={post.created_at} locale='en-US'/></a>
+                                        <a href="#" className="user-info__create-date"><ReactTimeAgo date={post.created_at} locale='en-US' /></a>
                                     </div>
 
                                     <h4 className="post__content">{post.text}</h4>
-                                    {post.file && <img src={Global.url + 'post/post-image/' + post.file} />}
+                                    {post.file &&
+                                        <div className='img-cont'>
+                                            <img src={Global.url + 'post/post-image/' + post.file} />
+                                        </div>}
                                 </div>
                             </div>
 

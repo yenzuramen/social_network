@@ -505,3 +505,16 @@ button{
 .delete-button:hover{
     background-color: #9b1717;
 }
+
+
+.img-cont{
+    width: 100%;
+    height: 300px;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.img-cont img{
+    width: 100%;
+    height: 100%;
+}

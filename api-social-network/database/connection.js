@@ -3,13 +3,16 @@
 //Importar mongoose
 const mongoose = require("mongoose")
 
+require('dotenv').config()
 
 const connect = async () => {
     try {
-        // await mongoose.connection(CONNECTION STRING/DN NAME,options(optional))/
-        await mongoose.connect('mongodb://localhost:27017/social_network')
 
-        console.log("SUCCESFULLY CONNECTED TO >>>> mongodb://localhost:27017/social_network");
+        const DB_URI = process.env.DB_URI
+        // await mongoose.connection(CONNECTION STRING/DN NAME,options(optional))/
+        await mongoose.connect(DB_URI)
+
+        console.log("SUCCESFULLY CONNECTED");
     } catch (error) {
         console.log(error);
         throw new Error("Cant connect to the database ")

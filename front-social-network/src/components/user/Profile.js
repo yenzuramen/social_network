@@ -43,19 +43,25 @@ export const Profile = () => {
         setPostsPage(1)
         getDataUser()
         getCounters()
+        console.log('hiiiii--');
 
     }, [])
 
     useEffect(() => {
+        console.log('changing post page');
+        getPosts()
+    }, [postsPage])
+
+    useEffect(() => {
+        console.log('params change--');
+        getPosts()
         setPostsPage(1)
         getDataUser()
         getCounters()
 
     }, [params])
 
-    useEffect(() => {
-        getPosts()
-    }, [postsPage])
+
 
     // const nextPage = () => {
     //     setPostsPage(postsPage + 1)

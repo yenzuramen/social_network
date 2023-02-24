@@ -2,14 +2,15 @@
 const { connect } = require('./database/connection')
 const express = require('express')
 const cors = require('cors')
-
+require('dotenv').config()
 
 //Conexion a bd
 connect();
 
 //Create node server
 const app = express();
-const port = 3900
+// const port = 3900
+const port = process.env.API_PORT || 3010 
 
 /// Convert body data to json objects
 app.use(cors())//Conf cors -middleware (Executes before the routes / endpoints ) -middleware
