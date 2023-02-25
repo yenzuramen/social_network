@@ -43,7 +43,7 @@ export const Profile = () => {
         setPostsPage(1)
         getDataUser()
         getCounters()
-        console.log('hiiiii--');
+
 
     }, [])
 
@@ -53,7 +53,6 @@ export const Profile = () => {
     }, [postsPage])
 
     useEffect(() => {
-        console.log('params change--');
         getPosts()
         setPostsPage(1)
         getDataUser()

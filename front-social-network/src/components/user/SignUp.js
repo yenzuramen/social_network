@@ -42,12 +42,12 @@ export const SignUp = () => {
             </header>
             {isSaved == 'saved' ?
                 <strong className='sign-up-alert alert-success'>
-                    El usuario ha sido guardado!
+                    User saved! You can log in now.
                 </strong> : ''}
 
             {isSaved == 'not-saved' ?
                 <strong className='sign-up-alert alert-error'>
-                    Error el usuario no se ha guardado, intenta con otro.
+                    User not saved.
                 </strong> : ''}
 
             <div className='content__posts' onSubmit={saveUser}>

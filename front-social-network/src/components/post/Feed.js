@@ -40,7 +40,7 @@ const Feed = () => {
 
 
     const getPosts = async () => {
-        console.log('--------- ' + postsPage);
+        // console.log('--------- ' + postsPage);
 
         const request = await fetch(Global.url + 'post/feed-posts/' + postsPage, {
             method: "GET",
@@ -51,7 +51,7 @@ const Feed = () => {
         })
         const data = await request.json()
 
-        console.log(data);
+        // console.log(data);
         if (data.status == 'success') {
 
             if (postsPage == 1) {

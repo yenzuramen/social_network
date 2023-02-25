@@ -56,11 +56,11 @@ export const Login = () => {
       </header>
       {loged == 'logged' ?
         <strong className='sign-up-alert alert-success'>
-          LogIn exitoso!
+          Succesful login, please wait...
         </strong> : ''}
       {loged == 'not-logged' ?
         <strong className='sign-up-alert alert-error'>
-          Email o contraseña invalidos...
+          Wrong email or password...
         </strong> : ''}
       <div className='content__posts'>
         <form className='login-form' onSubmit={logIn}>

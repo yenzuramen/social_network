@@ -1,4 +1,4 @@
 
 export const Global = {
- url:"http://localhost:4000/api/"
+ url:"https://modern-long-underwear-yak.cyclic.app/api/"
 }

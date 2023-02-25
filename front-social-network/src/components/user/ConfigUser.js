@@ -23,7 +23,7 @@ export const ConfigUser = () => {
 
         delete infoToUpdate.file0;
 
-        console.log(infoToUpdate);
+        // console.log(infoToUpdate);
 
         //Update on database
         const request = await fetch(Global.url + 'user/update', {
@@ -36,7 +36,7 @@ export const ConfigUser = () => {
         })
 
         const data = await request.json()
-        console.log(data);
+        // console.log(data);
         if (data.status == "success") {
             setIsSaved('saved')
             delete data.userUpdated.password;
@@ -60,7 +60,7 @@ export const ConfigUser = () => {
                 })
 
                 const uploadData = await uploadRequest.json()
-                console.log(uploadData);
+                // console.log(uploadData);
                 if (uploadData.status == 'success') {
                     setIsSaved('saved')
                     delete data.user.password;
@@ -84,12 +84,12 @@ export const ConfigUser = () => {
             </header>
             {isSaved == 'saved' ?
                 <strong className='sign-up-alert alert-success'>
-                    El usuario ha sido editado!
+                    User updated!
                 </strong> : ''}
 
             {isSaved == 'not-saved' ?
                 <strong className='sign-up-alert alert-error'>
-                    Error el usuario no se ha editado.
+                    Error user hasn't been updated.
                 </strong> : ''}
 
             <div className='content__posts' onSubmit={editUser}>

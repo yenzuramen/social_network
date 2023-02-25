@@ -32,7 +32,7 @@ export const DiscoverUsers = () => {
     })
 
     const data = await request.json();
-    console.log(data);
+    // console.log(data);
 
     //update followers and following 
     setFollowers(data.followers)
@@ -43,7 +43,6 @@ export const DiscoverUsers = () => {
       let updatedList = userList
       if (data.users.length >= 1) {
         updatedList = [...userList, ...data.users]
-        console.log('entrando');
       }
       setUserList(updatedList)
     }
@@ -59,7 +58,7 @@ export const DiscoverUsers = () => {
 
   useEffect(() => {
     getUsers()
-    console.log(usersPage);
+    // console.log(usersPage);
   }, [usersPage])
 
   // const nextPage = () => {

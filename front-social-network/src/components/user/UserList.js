@@ -25,7 +25,7 @@ export const UserList = ({ userList, setUserList, following, setFollowing, loadi
 
         const data = await request.json()
 
-        console.log(data);
+        // console.log(data);
 
         if (data.status == 'success') {
             setFollowing([...following, idToFollow])
